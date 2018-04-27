@@ -4,35 +4,39 @@
 # --------------------------------------------------------
 
 from pymonad.Container import *
+from abc import abstractmethod
+from typing import Callable
+
 
 class Functor(Container):
-	""" Represents a type of values which can be "mapped over." """
+    """ Represents a type of values which can be "mapped over." """
 
-	def __init__(self, value):
-		""" Stores `value` as the contents of the Functor. """
-		super(Functor, self).__init__(value)
+    def __init__(self, value: Any):
+        """ Stores `value` as the contents of the Functor. """
+        super(Functor, self).__init__(value)
 
-	def fmap(self, function):
-		""" Applies `function` to the contents of the functor and returns a new functor value. """
-		raise NotImplementedError("'fmap' not defined.")
+    @abstractmethod
+    def fmap(self, function: Callable) -> 'Functor':
+        """ Applies `function` to the contents of the functor and returns a new functor value. """
+        raise NotImplementedError("'fmap' not defined.")
 
-	def __rlshift__(self, aFunction):
-		"""
-		The 'fmap' operator.
-		The following are equivalent:
+    def __rlshift__(self, aFunction: Callable) -> 'Functor':
+        """
+        The 'fmap' operator.
+        The following are equivalent:
 
-			aFunctor.fmap(aFunction)
-			aFunction << aFunctor
+            aFunctor.fmap(aFunction)
+            aFunction << aFunctor
 
-		"""
+        """
 
-		return self.fmap(aFunction)
+        return self.fmap(aFunction)
 
-	@classmethod
-	def unit(cls, value):
-		""" Returns an instance of the Functor with `value` in a minimum context.  """
-		raise NotImplementedError
+    @classmethod
+    def unit(cls, value):
+        """ Returns an instance of the Functor with `value` in a minimum context.  """
+        raise NotImplementedError
 
 def unit(aClass, value):
-	""" Calls the 'unit' method of `aClass` with `value`.  """
-	return aClass.unit(value)
+    """ Calls the 'unit' method of `aClass` with `value`.  """
+    return aClass.unit(value)
