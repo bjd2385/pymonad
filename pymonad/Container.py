@@ -5,6 +5,7 @@
 
 from typing import Any
 
+
 class Container(object):
     """ Represents a wrapper around an arbitrary value and a method to access it. """
 
